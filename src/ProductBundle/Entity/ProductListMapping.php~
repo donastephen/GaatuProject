@@ -1,0 +1,39 @@
+<?php
+
+namespace ProductBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ProductListMapping
+ *
+ * @ORM\Table(name="product_list_mapping", indexes={@ORM\Index(name="product_id", columns={"product_id"}), @ORM\Index(name="product_list_id", columns={"product_list_id"})})
+ * @ORM\Entity
+ */
+class ProductListMapping
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="mapping_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $mappingId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="product_id", type="integer", nullable=false)
+     */
+    private $productId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="product_list_id", type="integer", nullable=false)
+     */
+    private $productListId;
+
+
+}

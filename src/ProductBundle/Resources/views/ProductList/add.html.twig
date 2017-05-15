@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+<ul class="products" data-prototype="{{ form_widget(form.products.vars.prototype.sku)|e('html_attr') }}">
+    ...
+</ul>
+

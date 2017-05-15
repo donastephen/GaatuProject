@@ -1,0 +1,7 @@
+product_homepage:
+     path:     /product
+     defaults: { _controller: ProductBundle:Product:add }
+    
+productlist:
+    path:     /productList
+    defaults: { _controller: ProductBundle:ProductList:add }
