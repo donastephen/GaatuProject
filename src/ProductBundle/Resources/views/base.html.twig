@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+    </head>
+    <body>
+        <div id="wrapper"> 
+            <div id="container">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+    <style>
+    #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
+    #container { padding: 1em; }
+    #form_content { border: 1px solid grey; background-color: lightgrey; padding: 10px;}
+    input {margin:5px;}
+    #error_message { color:red;}
+    button {
+        background-color: #000;
+        border: none;
+        color: white;
+        padding: 10px 27px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    </style>
+</html>

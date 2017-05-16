@@ -1,7 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block body %}
 {{ form_start(form) }}
-{{ form_widget(form) }}
+    {{ form_row(form.name) }}
+    <ul class="products" data-prototype="{{ form_widget(form.products.vars.prototype)|e('html_attr') }}">
+        {# iterate over each existing tag and render its only field: name #}
+        {% for product in form.products %}
+            <li>{{ form_row(product.sku) }}</li>
+        {% endfor %}
+    </ul>
 {{ form_end(form) }}
-<ul class="products" data-prototype="{{ form_widget(form.products.vars.prototype.sku)|e('html_attr') }}">
-    ...
-</ul>
 
+{% endblock %}
+    
+{% block javascripts %}
+<script>
+var $collectionHolder;
+
+var $addProductLink = $('<a href="#" class="add_product_link">Add a Product</a>');
+var $newLinkLi = $('<li></li>').append($addProductLink);
+
+jQuery(document).ready(function() {
+    // Get the ul that holds the collection of products
+    $collectionHolder = $('ul.products');
+
+    // add the "add a tag" anchor and li to the tags ul
+    $collectionHolder.append($newLinkLi);
+
+    // count the current form inputs we have (e.g. 2), use that as the new
+    // index when inserting a new item (e.g. 2)
+    $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+    $addProductLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        addProductForm($collectionHolder, $newLinkLi);
+    });
+});
+
+function addProductForm($collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = $collectionHolder.data('data-prototype');
+    console.log(prototype);
+
+    // get the new index
+    var index = $collectionHolder.data('index');
+
+    // Replace '__name__' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // increase the index with one for the next item
+    $collectionHolder.data('index', index + 1);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    var $newFormLi = $('<li></li>').append(newForm);
+    $newLinkLi.before($newFormLi);
+}
+</script>
+{% endblock %}

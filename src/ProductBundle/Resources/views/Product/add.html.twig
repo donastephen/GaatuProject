@@ -1,8 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'ProductBundle::base.html.twig' %}
 {% block title %}Products{% endblock %}
 {% block body %}
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
+<div id="header">
+    <h3>ADD NEW PRODUCT</h3>
+</div>
+<div id="form_content">
+    <div id="error_message">
+        {{ form_errors(form) }}  
+    </div>
+    {{ form_start(form) }}
+     {{ form_row(form.name) }}
+     {{ form_row(form.sku) }}
+    {{ form_end(form) }}
+</div>
 {% endblock %}
 

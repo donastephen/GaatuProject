@@ -4,12 +4,17 @@ namespace ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Product
  *
  * @ORM\Table(name="product")
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"sku"},
+ *     message="This SKU is already added."
+ * )
  */
 class Product
 {
@@ -22,11 +27,18 @@ class Product
      * 
      */
     private $id;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    private $name;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="sku", type="integer", nullable=false)
+     * @ORM\Column(name="sku", type="integer", unique=true, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Length(min=6)
      */
@@ -78,6 +90,30 @@ class Product
     public function getSku()
     {
         return $this->sku;
+    }
+    
+    
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return ProductList
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

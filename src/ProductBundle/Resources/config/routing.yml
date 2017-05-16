@@ -4,4 +4,4 @@ product_homepage:
     
 productlist:
     path:     /productList
-    defaults: { _controller: ProductBundle:ProductList:add }
+    defaults: { _controller: ProductBundle:ProductList:new }

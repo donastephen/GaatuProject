@@ -5,11 +5,16 @@ namespace ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use ProductBundle\Entity\Product;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * ProductList
  * @ORM\Table(name="product_list")
  * @ORM\Entity
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="Product List with same name exists."
+ * ) 
  */
 class ProductList
 {
@@ -24,10 +29,16 @@ class ProductList
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", unique=true, length=255, nullable=false)
      */
     private $name;
+    
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     */
+    private $description;
 
     /**
      * @var \DateTime
@@ -90,6 +101,30 @@ class ProductList
     public function getName()
     {
         return $this->name;
+    }
+    
+    
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return ProductList
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
