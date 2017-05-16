@@ -18,6 +18,11 @@ class ProductController extends Controller
         return $this->render('ProductBundle:Product:index.html.twig');
     }
     
+    /**
+     * Controller Action to add new Product
+     * @param Request $request
+     * @return Response
+     */
     public function addAction(Request $request)
     {
         $product = new Product(); 
@@ -35,7 +40,7 @@ class ProductController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($product);
                 $em->flush();
-                return new Response('Successfully saved new product.<br/><a href="/product">Add Product</a>' );
+                return new Response('Successfully saved new product.' );
             } else {
                 $form->addError(new FormError('Invalid data. Please enter again.'));
             }

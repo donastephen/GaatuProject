@@ -28,28 +28,28 @@ class ProductListController extends Controller
         //Code when the form gets submitted
         if ($form->isSubmitted()) {
             $data = $request->request->all();
-            $em = $this->getDoctrine()->getEntityManager();
             $productList = new ProductList();
             $productList->setName($data['product_list']['name']);
             $productList->setDescription($data['product_list']['description']);
-            $productList->setCreatedAt(new \DateTime()); 
-            $validator = $this->get('validator');
+            $productList->setCreatedAt(new \DateTime());            
             $products = $data['product_list']['products'];
             $result = $this->addProducts($products, $productList); 
             if ($result) {
+                // Validate the productList Object
+                $validator = $this->get('validator');
                 $errors = $validator->validate($productList);
-                // if model validation fails
                 if (!empty($errors)) {
+                    $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($productList); 
                     $em->flush();
                     return new Response('Successfully added new product list.' );
                 } else {
-                    $form->addError(new FormError('Invalid data. Please try again.'));
+                    $form->addError(new FormError('Invalid Data.Please make sure you are entering valid product SKU. Try again.'));
                 }
 
             } else {
                 // if error show error in form
-                $form->addError(new FormError('Invalid data. Please try again.'));
+                $form->addError(new FormError('Invalid Data. Please make sure you are entering valid product SKU. Try again.'));
             }                      
         }
          return $this->render('ProductBundle:ProductList:new.html.twig', array(
@@ -59,14 +59,14 @@ class ProductListController extends Controller
     }
    
     /**
-     * 
+     * Method to add products to the Product List if it is valid and if same product doesn't exist.
      * @param array $products
      * @param ProductList $productList
      * @return boolean
      */
     private function addProducts($products, &$productList)
     {
-        if(empty($products)){
+        if (empty($products)){
             return false;
         }
         foreach ($products as $product) {
@@ -78,7 +78,7 @@ class ProductListController extends Controller
                         ->findOneBySku($sku);
 
             // Checking whether this product has been already added to current Product List
-            if($product && !$productList->hasProduct($product)){
+            if ($product && !$productList->hasProduct($product)){
                 $productList->getProducts()->add($product);
             }
             else {
