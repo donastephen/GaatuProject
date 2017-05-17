@@ -4,7 +4,7 @@ Product_ProductList
 Description:
 ............
 Project for storing a list of products when the user scans a SKU, a unique 6 digit integer that represents a Product. 
-This app allows to add new Product and ProductList.
+This app allows to add new Product and ProductList. Screenshots are in web/screenshots folder.
 
 Symfony components used:
 ........................

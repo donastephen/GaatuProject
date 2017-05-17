@@ -1,24 +1,24 @@
 {% extends 'ProductBundle::base.html.twig' %}
 {% block body %}
 
-        <div id="header">
-            <h3>ADD NEW PRODUCT LIST</h3>
-        </div>
-        <div id="form_content">
-            <div id="error_message">
-                {{ form_errors(form) }}  
-            </div>
-            {{ form_start(form) }}
-                {{ form_row(form.name) }}
-                {{ form_row(form.description) }}
-                <ul class="products">
-                    <p>Add products to the product list.</p>
-                    {% for product in form.products %}
-                        <li>{{ form_row(product.sku) }}</li>
-                    {% endfor %}
-                </ul>
-            {{ form_end(form) }}
-        </div>
+<div id="header">
+    <h3>ADD NEW PRODUCT LIST</h3>
+</div>
+<div id="form_content">
+    <div id="error_message">
+        {{ form_errors(form) }}  
+    </div>
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        <ul class="products">
+            <p>Add products to the product list.</p>
+            {% for product in form.products %}
+                <li>{{ form_row(product.sku) }}</li>
+            {% endfor %}
+        </ul>
+    {{ form_end(form) }}
+</div>
 
 {% endblock %}
 
