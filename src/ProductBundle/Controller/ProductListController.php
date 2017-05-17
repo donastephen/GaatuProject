@@ -17,6 +17,11 @@ class ProductListController extends Controller
         return $this->render('ProductBundle:Product:index.html.twig');
     }
     
+    /**
+     * Method tocreate new ProductList
+     * @param Request $request
+     * @return Response
+     */
     public function newAction(Request $request)
     {
         //dummy product object for the form
