@@ -1,15 +1,20 @@
-{% extends 'base.html.twig' %}
+{% extends 'ProductBundle::base.html.twig' %}
 {% block body %}
+<div id="header">
+    <h3>ADD NEW PRODUCT LIST - MULTIPLE PRODUCT</h3>
+</div>
+<div id="form_content">
 {{ form_start(form) }}
     {{ form_row(form.name) }}
-    <ul class="products" data-prototype="{{ form_widget(form.products.vars.prototype)|e('html_attr') }}">
-        {# iterate over each existing tag and render its only field: name #}
-        {% for product in form.products %}
-            <li>{{ form_row(product.sku) }}</li>
-        {% endfor %}
-    </ul>
+    {{ form_row(form.description) }}
+        <ul class="products" data-prototype="{{ form_widget(form.products.vars.prototype)|e('html_attr') }}">
+            {# iterate over each existing tag and render its only field: name #}
+            {% for product in form.products %}
+                <li>{{ form_row(product.sku) }}</li>
+            {% endfor %}
+        </ul>
 {{ form_end(form) }}
-
+</div>
 {% endblock %}
     
 {% block javascripts %}
@@ -22,40 +27,51 @@ var $newLinkLi = $('<li></li>').append($addProductLink);
 jQuery(document).ready(function() {
     // Get the ul that holds the collection of products
     $collectionHolder = $('ul.products');
-
-    // add the "add a tag" anchor and li to the tags ul
+    // add the "add a product" anchor and li to the tags ul
     $collectionHolder.append($newLinkLi);
-
     // count the current form inputs we have (e.g. 2), use that as the new
     // index when inserting a new item (e.g. 2)
     $collectionHolder.data('index', $collectionHolder.find(':input').length);
-
+    
+    {#$collectionHolder.find('li').each(function() {
+        addProductFormDeleteLink($(this));
+    });
+#}
     $addProductLink.on('click', function(e) {
         // prevent the link from creating a "#" on the URL
-        e.preventDefault();
-
-        addProductForm($collectionHolder, $newLinkLi);
+            e.preventDefault();
+            addProductForm($collectionHolder, $newLinkLi);
     });
 });
 
 function addProductForm($collectionHolder, $newLinkLi) {
     // Get the data-prototype explained earlier
-    var prototype = $collectionHolder.data('data-prototype');
-    console.log(prototype);
-
+    var prototype = $collectionHolder.data('prototype');
     // get the new index
     var index = $collectionHolder.data('index');
-
     // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
     var newForm = prototype.replace(/__name__/g, index);
-
     // increase the index with one for the next item
     $collectionHolder.data('index', index + 1);
-
     // Display the form in the page in an li, before the "Add a tag" link li
     var $newFormLi = $('<li></li>').append(newForm);
     $newLinkLi.before($newFormLi);
+    addProductFormDeleteLink($newFormLi);
+}
+
+function addProductFormDeleteLink($productFormLi)
+{
+    var $removeFormA = $('<a href="#">Delete this product</a>');
+    $productFormLi.append($removeFormA);
+
+    $removeFormA.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+        // remove the li for the tag form
+        $productFormLi.remove();
+    });
+    
 }
 </script>
 {% endblock %}

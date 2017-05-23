@@ -18,6 +18,7 @@ class ProductListType extends AbstractType
         $builder->add('products', CollectionType::class, array(
             'entry_type' => ProductType::class,
             'allow_add'    => true,
+            'allow_delete' => true,
         ));
         
         $builder->add('save', SubmitType::class, array('label' => 'SAVE'));

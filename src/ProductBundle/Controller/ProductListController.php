@@ -18,7 +18,7 @@ class ProductListController extends Controller
     }
     
     /**
-     * Method tocreate new ProductList
+     * Method to create new ProductList (can add only one product per productList)
      * @param Request $request
      * @return Response
      */
@@ -69,7 +69,7 @@ class ProductListController extends Controller
      * @param ProductList $productList
      * @return boolean
      */
-    private function addProducts($products, &$productList)
+    private function addProducts($products, $productList)
     {
         if (empty($products)){
             return false;
@@ -94,4 +94,49 @@ class ProductListController extends Controller
         return true;
         
     }
+    
+    /**
+     * 
+     * @param Request $request
+     * @return Response
+     * Product add action with multi add and remove
+     */
+    public function addAction(Request $request)
+    {
+        $productList = new ProductList();    
+        $form = $this->createForm(ProductListType::class, $productList);
+        $form->handleRequest($request);      
+        //Code when the form gets submitted
+        if ($form->isSubmitted()) {
+            $data = $request->request->all();
+            $productList = new ProductList();
+            $productList->setName($data['product_list']['name']);
+            $productList->setDescription($data['product_list']['description']);
+            $productList->setCreatedAt(new \DateTime());            
+            $products = $data['product_list']['products'];
+            $result = $this->addProducts($products, $productList); 
+            if ($result) {
+                // Validate the productList Object
+                $validator = $this->get('validator');
+                $errors = $validator->validate($productList);
+                if (!empty($errors)) {
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($productList); 
+                    $em->flush();
+                    return new Response('Successfully added new product list.' );
+                } else {
+                    $form->addError(new FormError('Invalid Data.Please make sure you are entering valid product SKU. Try again.'));
+                }
+
+            } else {
+                // if error show error in form
+                $form->addError(new FormError('Invalid Data. Please make sure you are entering valid product SKU. Try again.'));
+            }                      
+        }
+         return $this->render('ProductBundle:ProductList:add.html.twig', array(
+            'form' => $form->createView(),
+        ));
+         
+     }
+    
 }
